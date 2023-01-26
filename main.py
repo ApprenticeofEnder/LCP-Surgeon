@@ -12,10 +12,12 @@ app = FastAPI()
 
 @app.post("/api/lcp/processor")
 async def upload_lcp(lcp_file: UploadFile):
+    old_lcp_bytes = lcp_file.file.read()
+    lcp_file.file.seek(0)
     new_lcp_bytes = process_lcp(lcp_file)
     package = io.BytesIO()
     with zipfile.ZipFile(package, 'w') as package_file:
-        package_file.writestr(f'{lcp_file.filename}.bak', lcp_file.file.read())
+        package_file.writestr(f'{lcp_file.filename}.bak', old_lcp_bytes)
         package_file.writestr(lcp_file.filename, new_lcp_bytes)
     response = StreamingResponse(iter([package.getvalue()]),
                             media_type="application/zip")

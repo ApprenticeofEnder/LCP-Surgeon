@@ -82,7 +82,7 @@ def process_lcp(uploaded_file: UploadFile) -> bytes:
         'tags.json',
         'talents.json'
     ]
-    untouched_files = {x: None for x in untouched_filenames}
+    untouched_files = {x: bytes() for x in untouched_filenames}
     with ZipFile(uploaded_file.file) as lcp_file:
         new_frames = frame_data_convert(lcp_file)
         new_weapons = weapon_data_convert(lcp_file)
@@ -91,7 +91,6 @@ def process_lcp(uploaded_file: UploadFile) -> bytes:
     new_lcp = io.BytesIO()
     with ZipFile(new_lcp, 'w') as new_lcp_file:
         for untouched_filename, untouched_file in untouched_files.items():
-            logging.debug(untouched_file)
             if untouched_file is not None:
                 new_lcp_file.writestr(untouched_filename, untouched_file)
         new_lcp_file.writestr('frames.json', new_frames)
