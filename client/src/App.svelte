@@ -1,10 +1,12 @@
 <script>
-	export let name;
 </script>
 
 <main>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
+	<h1>LCP Surgeon</h1>
+	<form action="/api/lcp/processor" enctype="multipart/form-data" method="post">
+		<input type="file" name="lcp_file">
+		<input type="submit">
+	</form>
 </main>
 
 <style>
